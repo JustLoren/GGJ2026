@@ -45,7 +45,6 @@ GameObject:
   - component: {fileID: 913353530812550595}
   - component: {fileID: 5513538860841739225}
   - component: {fileID: 3179106345456120949}
-  - component: {fileID: 4954408299410046259}
   m_Layer: 0
   m_Name: Card Front Mesh
   m_TagString: Untagged
@@ -125,28 +124,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &4954408299410046259
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4683539079149482819}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &6099044517288726624
 GameObject:
   m_ObjectHideFlags: 0
@@ -158,7 +135,6 @@ GameObject:
   - component: {fileID: 3147411459952907303}
   - component: {fileID: 7343189340145461697}
   - component: {fileID: 5509871907700180811}
-  - component: {fileID: 2048532907463895998}
   m_Layer: 0
   m_Name: Card Back Mesh
   m_TagString: Untagged
@@ -238,28 +214,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &2048532907463895998
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6099044517288726624}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &6944976155572380034
 GameObject:
   m_ObjectHideFlags: 0
@@ -271,7 +225,6 @@ GameObject:
   - component: {fileID: 2913648482235806398}
   - component: {fileID: 7786926173296061224}
   - component: {fileID: 5864769737989865744}
-  - component: {fileID: 1432564912231292621}
   m_Layer: 0
   m_Name: Card Number Mesh
   m_TagString: Untagged
@@ -351,28 +304,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &1432564912231292621
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6944976155572380034}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &8308956336822440999
 GameObject:
   m_ObjectHideFlags: 0
@@ -384,6 +315,7 @@ GameObject:
   - component: {fileID: 3979551548872490122}
   - component: {fileID: 1882170917338711666}
   - component: {fileID: 6769540357013317310}
+  - component: {fileID: 3734271239545327205}
   m_Layer: 0
   m_Name: BaseCard
   m_TagString: Untagged
@@ -450,3 +382,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   LerpSpeed: 12
+--- !u!114 &3734271239545327205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8308956336822440999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 806576a26b5011643b862e38ad41b7e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  CardNumber: {fileID: 5864769737989865744}
+  CloneColors:
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 0.007867813, g: 0, b: 1, a: 1}
+  - {r: 0, g: 1, b: 0.06819844, a: 1}
