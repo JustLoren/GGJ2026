@@ -19,9 +19,9 @@ public class NumberChangeMask : ICrazyMask
             if (card.Affected)
                 continue;
 
-            var randomNumber = Random.Range(0, 14);
+            var randomNumber = Random.Range(2, 15);
             while (randomNumber == card.GetNumber())
-                randomNumber = Random.Range(0, 14);
+                randomNumber = Random.Range(2, 15);
 
             card.SetNumber(randomNumber);
 
