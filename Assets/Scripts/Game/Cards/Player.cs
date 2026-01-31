@@ -56,10 +56,10 @@ public class Player : MonoBehaviour
         {
             var newCard = Instantiate(CardPrefab, HandContainer.transform);
 
-            newCard.transform.position += new Vector3(0, 0, .01f * i);
+            //newCard.transform.position += new Vector3(0, 0, .01f * i);
 
             newCard.SetNumber(i);
-            Hand.Add(newCard);
+            Hand.Insert(Random.Range(0, Hand.Count + 1), newCard);
         }
     }
 }
