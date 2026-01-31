@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Card : MonoBehaviour
 {
@@ -8,11 +9,14 @@ public class Card : MonoBehaviour
     public MeshRenderer BgMesh;
     public MeshRenderer FgMesh;
 
+    public List<Material> CardFaces = new();
+
     public void SetNumber(int number)
     {
         _number = number;
 
         //Update your visuals to match `number`
+        FgMesh.material = CardFaces[number - 2];
     }
 
     public int GetNumber()

@@ -5,11 +5,9 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public Player PlayerPrefab;
-
     [DoNotSerialize]
     public int CurrentPlayerIndex;
-    private List<Player> players = new();
+    public List<Player> players = new();
     private List<Card> trick = new();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -19,15 +17,13 @@ public class GameManager : MonoBehaviour
 
     public void InitializeGame()
     {
-        for (int i = 0; i < 4; i++)
+        foreach (var player in players)
         {
-            var newPlayer = GameObject.Instantiate(PlayerPrefab);
-            newPlayer.name = $"Player {i + 1}";
-            players.Add(newPlayer);
+            player.InitializeHand();
         }
     }
 
-    public void NextTurn()
+    public virtual void NextTurn()
     {
         CurrentPlayerIndex = (CurrentPlayerIndex + 1) % players.Count;
         var card = players[CurrentPlayerIndex].GetPlayedCard();
@@ -91,13 +87,6 @@ public class GameManager : MonoBehaviour
         var winner = players.First(p => p.Points == players.Max(pm => pm.Points));
 
         Debug.Log($"We have a winner: {winner.name} with {winner.Points} points. Good job!");
-
-        foreach (var player in players)
-        {
-            Destroy(player.gameObject);
-        }
-
-        players.Clear();
 
         InitializeGame();
     }
