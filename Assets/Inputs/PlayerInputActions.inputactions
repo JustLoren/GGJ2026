@@ -131,6 +131,17 @@
                     "action": "Select Card",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6fbd54ff-3c07-4ddb-9cdb-0246a8988ed9",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select Card",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
