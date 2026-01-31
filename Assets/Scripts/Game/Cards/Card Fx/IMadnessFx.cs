@@ -7,4 +7,7 @@
 public enum MadnessFxType
 {
     ColorSpray = 0,
+    NumberChange = 1,
+    Rotation = 2,
+    ColorFade = 3,
 }

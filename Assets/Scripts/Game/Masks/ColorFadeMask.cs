@@ -1,0 +1,29 @@
+using UnityEngine;
+
+public class ColorFadeMask : ICrazyMask
+{
+    public int QuantityToAffect { get; set; } = 3;
+    public int Priority { get; private set; } = 99;
+
+    public void Apply(Player player)
+    {
+        if (QuantityToAffect > player.Hand.Count)
+            throw new UnityException("Wtf you can't color fade that many cards, bozo");
+
+        int affectedCount = 0;
+        while (affectedCount < QuantityToAffect)
+        {
+            var card = player.Hand[Random.Range(0, player.Hand.Count)];
+
+            //See if we've already affected this gal
+            if (card.Affected)
+                continue;
+
+            var fx = card.GetComponentInChildren<ColorFadeCardFx>();
+            fx.Engage();
+
+            affectedCount++;
+            card.Affected = true;
+        }
+    }
+}

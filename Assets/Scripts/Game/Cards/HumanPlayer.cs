@@ -42,10 +42,16 @@ public class HumanPlayer : Player
 
         if (dexterityAction.WasPressedThisFrame())
         {
-            var rotations = GameObject.FindObjectsByType<RotationFx>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-            foreach (var rotation in rotations)
+            //var rotations = GameObject.FindObjectsByType<RotationFx>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            //foreach (var rotation in rotations)
+            //{
+            //    rotation.AddRotation();
+            //}
+
+            var fades = GameObject.FindObjectsByType<ColorFadeCardFx>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            foreach (var fade in fades)
             {
-                rotation.Engage();
+                fade.ApplyFade();
             }
         }
     }
@@ -123,7 +129,7 @@ public class HumanPlayer : Player
     }
     private List<ICrazyMask> FetchMaskEffects()
     {
-        return new() { new ColorSprayMask(), new NumberChangeMask() };
+        return new() { new ColorSprayMask(), new NumberChangeMask(), new ColorFadeMask() };
     }
 
     private bool hasChosenCard = false;

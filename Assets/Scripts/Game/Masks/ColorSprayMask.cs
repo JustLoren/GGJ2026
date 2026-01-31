@@ -23,6 +23,7 @@ public class ColorSprayMask : ICrazyMask
             fx.Engage();
 
             affectedCount++;
+            card.Affected = true;
         }
     }
 }

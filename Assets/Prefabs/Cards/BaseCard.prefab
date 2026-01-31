@@ -316,6 +316,8 @@ GameObject:
   - component: {fileID: 1882170917338711666}
   - component: {fileID: 6769540357013317310}
   - component: {fileID: 3734271239545327205}
+  - component: {fileID: 3889089901808716304}
+  - component: {fileID: 4330731571674487063}
   m_Layer: 0
   m_Name: BaseCard
   m_TagString: Untagged
@@ -401,3 +403,34 @@ MonoBehaviour:
   - {r: 0, g: 1, b: 0.06819844, a: 1}
   - {r: 1, g: 0, b: 0.92240334, a: 1}
   - {r: 1, g: 0.8585522, b: 0, a: 1}
+--- !u!114 &3889089901808716304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8308956336822440999}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 541448baff5bd3443a121a8fc1711b06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RotationFx
+  CardObject: {fileID: 1440958290370798106}
+  RotationForce: 120
+  ReturnStrength: 30
+  RotationDecay: 35
+--- !u!114 &4330731571674487063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8308956336822440999}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 950b13d164aeea349adf1741d190f42f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ColorFadeCardFx
+  CardNumber: {fileID: 5864769737989865744}
+  fadeRate: 1
+  lightUpRate: 0.25

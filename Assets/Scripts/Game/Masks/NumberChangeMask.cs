@@ -28,6 +28,7 @@ public class NumberChangeMask : ICrazyMask
             card.FgMesh.material.color = new Color(1, 0, 0, .85f);
 
             affectedCount++;
+            card.Affected = true;
         }
     }
 }
