@@ -1,13 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ColorSprayCardFx : MonoBehaviour
+public class ColorSprayCardFx : MonoBehaviour, IMadnessFx
 {
     public MeshRenderer CardNumber;
 
     private List<MeshRenderer> numberClones = new();
 
     public List<Color> CloneColors = new();
+
+    public MadnessFxType FxType => MadnessFxType.ColorSpray;
 
     private void Init()
     {
@@ -20,9 +22,10 @@ public class ColorSprayCardFx : MonoBehaviour
             clone.gameObject.AddComponent<ObjectJiggler>();
         }
         CardNumber.gameObject.SetActive(false);
+        this.enabled = true;
     }
 
-    private void Start()
+    public void Engage()
     {
         Init();
     }

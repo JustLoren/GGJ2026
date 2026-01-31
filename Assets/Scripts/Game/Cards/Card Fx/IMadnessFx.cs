@@ -1,5 +1,10 @@
 ﻿public interface IMadnessFx
 {
-    public int FxType { get; }
+    public MadnessFxType FxType { get; }
     public void Engage();
+}
+
+public enum MadnessFxType
+{
+    ColorSpray = 0,
 }

@@ -354,6 +354,7 @@ MonoBehaviour:
   _number: 0
   BgMesh: {fileID: 3179106345456120949}
   FgMesh: {fileID: 5864769737989865744}
+  CardContainer: {fileID: 8298740116793750652}
   CardFaces:
   - {fileID: 2100000, guid: 75d4c5a8c166ff1499b3387b39e18f9c, type: 2}
   - {fileID: 2100000, guid: d36ff848f449e5445a7c98d068378e77, type: 2}

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class HumanPlayer : Player
@@ -13,6 +15,9 @@ public class HumanPlayer : Player
 
     public string selectActionName = "Select Card";
     private InputAction selectAction;
+
+    public string dexterityActionName = "Apply Dexterity";
+    private InputAction dexterityAction;
 
     private HandFanner _handFanner;
 
@@ -29,12 +34,20 @@ public class HumanPlayer : Player
         if (nextAction.WasPressedThisFrame())
             _handFanner.SelectNext();
 
-
         if (previousAction.WasPressedThisFrame())
             _handFanner.SelectPrevious();
 
         if (selectAction.WasPressedThisFrame())
             hasChosenCard = true;
+
+        if (dexterityAction.WasPressedThisFrame())
+        {
+            var rotations = GameObject.FindObjectsByType<RotationFx>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            foreach (var rotation in rotations)
+            {
+                rotation.Engage();
+            }
+        }
     }
 
     private void OnEnable()
@@ -58,6 +71,12 @@ public class HumanPlayer : Player
                 Debug.LogError($"Could not find action '{selectActionName}'. Check your Input Actions asset.");
             else
                 selectAction.Enable();
+
+            dexterityAction = playerInput.actions[dexterityActionName];
+            if (dexterityAction == null)
+                Debug.LogError($"Could not find action '{dexterityActionName}'. Check your Input Actions asset.");
+            else
+                dexterityAction.Enable();
         }
     }
 
@@ -66,6 +85,7 @@ public class HumanPlayer : Player
         nextAction?.Disable();
         previousAction?.Disable();
         selectAction?.Disable();
+        dexterityAction?.Disable();
     }
 
     private void Start()
@@ -95,6 +115,15 @@ public class HumanPlayer : Player
 
         _handFanner.SelectIndex(0);
         _handFanner.FanHand();
+
+        //Enforce mask properties
+        var masks = FetchMaskEffects();
+        foreach (var mask in masks.OrderBy(m => m.Priority))
+            mask.Apply(this);
+    }
+    private List<ICrazyMask> FetchMaskEffects()
+    {
+        return new() { new ColorSprayMask(), new NumberChangeMask() };
     }
 
     private bool hasChosenCard = false;

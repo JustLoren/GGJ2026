@@ -8,6 +8,8 @@ public class Card : MonoBehaviour
     private int _number;
     public MeshRenderer BgMesh;
     public MeshRenderer FgMesh;
+    public Transform CardContainer;
+    public bool Affected { get; set; } = false;
 
     public List<Material> CardFaces = new();
 
