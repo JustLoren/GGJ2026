@@ -66,6 +66,23 @@ public class GameManager : MonoBehaviour
         //Now we know who won
         Debug.Log($"{players[winningPlayer].name} won the trick!");
         players[winningPlayer].Points++;
+        var winningCard = trick[winningPlayer];
+        var offset = .01f;
+        if (players[winningPlayer] is HumanPlayer)
+            offset *= -1f;
+
+        foreach (var card in trick)
+        {
+            if (card != winningCard)
+            {
+                card.transform.parent = winningCard.transform.parent;
+
+                card.positioner.SetPosition(
+                    winningCard.transform.localPosition + Vector3.back * offset,
+                    winningCard.transform.localRotation,
+                    winningCard.transform.localScale);
+            }
+        }
     }
 
     private void DeclareWinner()
