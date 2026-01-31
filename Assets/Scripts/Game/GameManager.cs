@@ -34,18 +34,15 @@ public class GameManager : MonoBehaviour
         {
             trick.Add(card);
 
-            nextTurnTime = Time.time + turnTime;
-            if (trick.Count == players.Count)
-            {
-                ComputeTrickWinner();
-            }
+            var target = players[CurrentPlayerIndex].PlayLocation.transform;
+            card.positioner.SetPosition(target.localPosition, target.localRotation, target.localScale);
         }
 
         CurrentPlayerIndex = (CurrentPlayerIndex + 1) % players.Count;
     }
 
-    float turnTime = .1f;
-    float nextTurnTime = 0f;
+    public float turnTime = .25f;
+    public float waitAfterRound = 2.5f;
     // Update is called once per frame
     void Update()
     {
@@ -69,13 +66,6 @@ public class GameManager : MonoBehaviour
         //Now we know who won
         Debug.Log($"{players[winningPlayer].name} won the trick!");
         players[winningPlayer].Points++;
-
-        foreach (var card in trick)
-        {
-            Destroy(card.gameObject);
-        }
-
-        trick.Clear();
     }
 
     private void DeclareWinner()
@@ -94,6 +84,22 @@ public class GameManager : MonoBehaviour
             yield return new WaitUntil(() => players[CurrentPlayerIndex].HasCardSelected());
 
             NextTurn();
+
+            yield return new WaitForSecondsRealtime(turnTime);
+
+            if (trick.Count == players.Count)
+            {
+                ComputeTrickWinner();
+
+                yield return new WaitForSecondsRealtime(waitAfterRound);
+
+                foreach (var card in trick)
+                {
+                    Destroy(card.gameObject);
+                }
+
+                trick.Clear();
+            }
 
             if (players[CurrentPlayerIndex].Hand.Count == 0)
             {

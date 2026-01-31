@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public GameObject HandContainer;
+    public GameObject PlayLocation;
     public List<Card> Hand = new();
     public Card CardPrefab;
     [DoNotSerialize]
