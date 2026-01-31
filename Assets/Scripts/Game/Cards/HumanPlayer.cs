@@ -79,6 +79,8 @@ public class HumanPlayer : Player
         // Prefer selected card if available
         var selected = _handFanner.GetSelectedCard();
 
+        _handFanner.ShowSelected = false;
+
         Hand.Remove(selected);
         _handFanner.FanHand();
 

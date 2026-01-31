@@ -11,6 +11,13 @@ public class Card : MonoBehaviour
 
     public List<Material> CardFaces = new();
 
+    public CardPositioner positioner;
+
+    private void Awake()
+    {
+        positioner = GetComponent<CardPositioner>();
+    }
+
     public void SetNumber(int number)
     {
         _number = number;

@@ -91,6 +91,9 @@ MonoBehaviour:
   Hand: []
   CardPrefab: {fileID: 1882170917338711666, guid: 422a47f4b3e899d489a0e1b3eef5e1eb, type: 3}
   Points: 0
+  nextActionName: Next Card
+  previousActionName: Previous Card
+  selectActionName: Select Card
 --- !u!114 &2683634305778121931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -141,9 +144,15 @@ MonoBehaviour:
   MaxZRoll: 12
   BasePitch: 28.5
   BaseYaw: 0
-  HandCenterOffset: {x: 0, y: 0, z: -2.2}
+  HandCenterOffset: {x: 0, y: -0, z: -2.48}
   LerpSpeed: 10
   AnimateContinuously: 1
+  SelectedIndex: 6
+  SelectedLift: 0.16
+  SelectedForward: -0.05
+  SelectedScale: 1.05
+  SelectedRollReduction: 0.35
+  SelectedExtraPitch: -4
 --- !u!1 &5738898398500051441 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8304188314634705445, guid: 523d189de3b23da42807b0230abc1dbe, type: 3}

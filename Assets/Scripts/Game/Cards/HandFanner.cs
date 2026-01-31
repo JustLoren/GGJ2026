@@ -20,13 +20,10 @@ public class HandFanner : MonoBehaviour
     [Header("Offsets")]
     public Vector3 HandCenterOffset = Vector3.zero;
 
-    [Header("Smoothing")]
-    public float LerpSpeed = 12f;
-    public bool AnimateContinuously = true;
-
     [Header("Selection")]
     [Tooltip("Which card index is currently selected. -1 means none selected.")]
     public int SelectedIndex = 0;
+    public bool ShowSelected = false;
 
     [Tooltip("How much the selected card lifts up (local Y).")]
     public float SelectedLift = 0.4f;
@@ -53,8 +50,7 @@ public class HandFanner : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (AnimateContinuously)
-            FanHand();
+        FanHand();
     }
 
     /// <summary>Call when the hand changes (or let AnimateContinuously handle it).</summary>
@@ -123,7 +119,7 @@ public class HandFanner : MonoBehaviour
         Vector3 extraPos = Vector3.zero;
         Vector3 targetScale = Vector3.one;
 
-        if (isSelected)
+        if (ShowSelected && isSelected)
         {
             extraPos += Vector3.up * SelectedLift;
             extraPos += Vector3.forward * SelectedForward;
@@ -142,44 +138,27 @@ public class HandFanner : MonoBehaviour
             -rollForThisCard
         );
 
-        PositionCard(card, localPos, localRot, targetScale);
-    }
-
-    private void PositionCard(Card card, Vector3 localPos, Quaternion localRot, Vector3 targetScale)
-    {
-        Transform t = card.transform;
-
-        if (LerpSpeed > 0f)
-        {
-            float k = Time.deltaTime * LerpSpeed;
-            t.localPosition = Vector3.Lerp(t.localPosition, localPos, k);
-            t.localRotation = Quaternion.Slerp(t.localRotation, localRot, k);
-            t.localScale = Vector3.Lerp(t.localScale, targetScale, k);
-        }
-        else
-        {
-            t.localPosition = localPos;
-            t.localRotation = localRot;
-            t.localScale = targetScale;
-        }
+        card.positioner.SetPosition(localPos, localRot, targetScale);
     }
 
     // --- Selection API ---
 
     public void SelectNext()
     {
+        ShowSelected = true;
+
         int count = _player.Hand.Count;
         if (count == 0) { SelectedIndex = -1; return; }
         SelectedIndex = (SelectedIndex + 1) % count;
-        if (!AnimateContinuously) FanHand();
     }
 
     public void SelectPrevious()
     {
+        ShowSelected = true;
+
         int count = _player.Hand.Count;
         if (count == 0) { SelectedIndex = -1; return; }
         SelectedIndex = (SelectedIndex - 1 + count) % count;
-        if (!AnimateContinuously) FanHand();
     }
 
     public void SelectIndex(int index)
@@ -187,7 +166,6 @@ public class HandFanner : MonoBehaviour
         int count = _player.Hand.Count;
         if (count == 0) { SelectedIndex = -1; return; }
         SelectedIndex = Mathf.Clamp(index, 0, count - 1);
-        if (!AnimateContinuously) FanHand();
     }
 
     /// <summary>Gets the selected card instance (or null).</summary>
