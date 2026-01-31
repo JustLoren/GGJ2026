@@ -4,42 +4,45 @@ using UnityEngine;
 public class HandFanner : MonoBehaviour
 {
     [Header("Adaptive Fan Angle")]
-    [Tooltip("Fan angle when the hand is very small (e.g., 1-2 cards).")]
     public float MinFanAngle = 12f;
-
-    [Tooltip("Fan angle when the hand is 'full' (FullHandCount cards).")]
     public float MaxFanAngle = 60f;
-
-    [Tooltip("How many cards counts as a 'full hand' for the purpose of MaxFanAngle.")]
-    [Range(2, 12)]
-    public int FullHandCount = 12;
+    [Range(2, 12)] public int FullHandCount = 12;
 
     [Header("Fan Shape")]
-    [Tooltip("Radius of the arc used to position cards.")]
     public float FanRadius = 2.5f;
-
-    [Tooltip("Vertical offset per card (prevents Z-fighting).")]
     public float CardDepthOffset = 0.01f;
 
     [Header("Rotation")]
-    [Tooltip("Max roll (Z axis) applied to the outermost cards. Middle card will be near 0.")]
     public float MaxZRoll = 12f;
-
-    [Tooltip("Optional extra pitch so the hand faces camera a bit (X axis).")]
     public float BasePitch = 0f;
-
-    [Tooltip("Optional base yaw for the whole hand (Y axis).")]
     public float BaseYaw = 0f;
 
     [Header("Offsets")]
     public Vector3 HandCenterOffset = Vector3.zero;
 
     [Header("Smoothing")]
-    [Tooltip("If 0, snap instantly. If > 0, use smoothing.")]
     public float LerpSpeed = 12f;
-
-    [Tooltip("If true, will keep animating toward target positions/rotations every frame.")]
     public bool AnimateContinuously = true;
+
+    [Header("Selection")]
+    [Tooltip("Which card index is currently selected. -1 means none selected.")]
+    public int SelectedIndex = 0;
+
+    [Tooltip("How much the selected card lifts up (local Y).")]
+    public float SelectedLift = 0.4f;
+
+    [Tooltip("How much closer the selected card comes toward camera (local Z). Usually small.")]
+    public float SelectedForward = -0.05f;
+
+    [Tooltip("Optional extra scale for selected card.")]
+    public float SelectedScale = 1.05f;
+
+    [Tooltip("Optional extra roll reduction (0..1). 1 = remove roll on selected card.")]
+    [Range(0f, 1f)]
+    public float SelectedRollReduction = 0.35f;
+
+    [Tooltip("Optional extra pitch applied to selected card.")]
+    public float SelectedExtraPitch = -4f;
 
     private Player _player;
 
@@ -54,66 +57,95 @@ public class HandFanner : MonoBehaviour
             FanHand();
     }
 
-    /// <summary>
-    /// Call this whenever the hand changes (or let AnimateContinuously do it).
-    /// </summary>
+    /// <summary>Call when the hand changes (or let AnimateContinuously handle it).</summary>
     public void FanHand()
     {
         var hand = _player.Hand;
         int cardCount = hand.Count;
 
         if (cardCount == 0)
+        {
+            SelectedIndex = -1;
             return;
+        }
 
-        // Determine adaptive fan angle based on card count.
-        // 2 cards => MinFanAngle-ish, FullHandCount cards => MaxFanAngle.
+        // Keep SelectedIndex valid even as cards are removed.
+        if (SelectedIndex >= cardCount) SelectedIndex = cardCount - 1;
+
         float t = Mathf.InverseLerp(2f, FullHandCount, cardCount);
         float effectiveFanAngle = Mathf.Lerp(MinFanAngle, MaxFanAngle, t);
 
-        // Single card: center it
         if (cardCount == 1)
         {
-            PositionCard(hand[0], HandCenterOffset, Quaternion.Euler(BasePitch, BaseYaw, 0f));
+            bool isSelected = (SelectedIndex == 0);
+            ApplyLayout(hand[0], 0, 1, 0f, isSelected);
             return;
         }
 
         float angleStep = effectiveFanAngle / (cardCount - 1);
         float startAngle = -effectiveFanAngle / 2f;
-
-        // Used to create a -1..+1 index range for Z roll
         float mid = (cardCount - 1) / 2f;
 
         for (int i = 0; i < cardCount; i++)
         {
             float yawAngle = startAngle + angleStep * i;
+            bool isSelected = (i == SelectedIndex);
 
-            // Arc position
-            float radians = yawAngle * Mathf.Deg2Rad;
-            Vector3 localPos = new Vector3(
-                Mathf.Sin(radians) * FanRadius,
-                0f,
-                Mathf.Cos(radians) * FanRadius
-            );
-
-            localPos += HandCenterOffset;
-            localPos += Vector3.forward * (i * CardDepthOffset);
-
-            // Roll (Z axis): outer cards tilt more, center tilts least.
-            // normalizedIndex: -1 (left edge) to +1 (right edge)
-            float normalizedIndex = (i - mid) / mid;
-            float zRoll = normalizedIndex * MaxZRoll;
-
-            Quaternion localRot = Quaternion.Euler(
-                BasePitch,
-                BaseYaw + yawAngle,
-                -zRoll
-            );
-
-            PositionCard(hand[i], localPos, localRot);
+            ApplyLayout(hand[i], i, cardCount, yawAngle, isSelected, mid);
         }
     }
 
-    private void PositionCard(Card card, Vector3 localPos, Quaternion localRot)
+    private void ApplyLayout(Card card, int i, int cardCount, float yawAngle, bool isSelected, float mid = 0f)
+    {
+        // Position on arc
+        float radians = yawAngle * Mathf.Deg2Rad;
+
+        Vector3 localPos = new Vector3(
+            Mathf.Sin(radians) * FanRadius,
+            0f,
+            Mathf.Cos(radians) * FanRadius
+        );
+
+        localPos += HandCenterOffset;
+        localPos += Vector3.forward * (i * CardDepthOffset);
+
+        // Base roll
+        float zRoll = 0f;
+        if (cardCount > 1)
+        {
+            float normalizedIndex = (i - mid) / mid; // -1..+1
+            zRoll = normalizedIndex * MaxZRoll;
+        }
+
+        // Selection adjustments
+        float rollForThisCard = zRoll;
+        float extraPitch = 0f;
+        Vector3 extraPos = Vector3.zero;
+        Vector3 targetScale = Vector3.one;
+
+        if (isSelected)
+        {
+            extraPos += Vector3.up * SelectedLift;
+            extraPos += Vector3.forward * SelectedForward;
+
+            rollForThisCard = Mathf.Lerp(zRoll, 0f, SelectedRollReduction);
+            extraPitch += SelectedExtraPitch;
+
+            targetScale = Vector3.one * SelectedScale;
+        }
+
+        localPos += extraPos;
+
+        Quaternion localRot = Quaternion.Euler(
+            BasePitch + extraPitch,
+            BaseYaw + yawAngle,
+            -rollForThisCard
+        );
+
+        PositionCard(card, localPos, localRot, targetScale);
+    }
+
+    private void PositionCard(Card card, Vector3 localPos, Quaternion localRot, Vector3 targetScale)
     {
         Transform t = card.transform;
 
@@ -122,11 +154,47 @@ public class HandFanner : MonoBehaviour
             float k = Time.deltaTime * LerpSpeed;
             t.localPosition = Vector3.Lerp(t.localPosition, localPos, k);
             t.localRotation = Quaternion.Slerp(t.localRotation, localRot, k);
+            t.localScale = Vector3.Lerp(t.localScale, targetScale, k);
         }
         else
         {
             t.localPosition = localPos;
             t.localRotation = localRot;
+            t.localScale = targetScale;
         }
+    }
+
+    // --- Selection API ---
+
+    public void SelectNext()
+    {
+        int count = _player.Hand.Count;
+        if (count == 0) { SelectedIndex = -1; return; }
+        SelectedIndex = (SelectedIndex + 1) % count;
+        if (!AnimateContinuously) FanHand();
+    }
+
+    public void SelectPrevious()
+    {
+        int count = _player.Hand.Count;
+        if (count == 0) { SelectedIndex = -1; return; }
+        SelectedIndex = (SelectedIndex - 1 + count) % count;
+        if (!AnimateContinuously) FanHand();
+    }
+
+    public void SelectIndex(int index)
+    {
+        int count = _player.Hand.Count;
+        if (count == 0) { SelectedIndex = -1; return; }
+        SelectedIndex = Mathf.Clamp(index, 0, count - 1);
+        if (!AnimateContinuously) FanHand();
+    }
+
+    /// <summary>Gets the selected card instance (or null).</summary>
+    public Card GetSelectedCard()
+    {
+        if (SelectedIndex < 0) return null;
+        if (SelectedIndex >= _player.Hand.Count) return null;
+        return _player.Hand[SelectedIndex];
     }
 }

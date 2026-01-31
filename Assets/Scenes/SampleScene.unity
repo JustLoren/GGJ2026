@@ -780,6 +780,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5268820417515533939, guid: b7510849115130640891a1b76d286568, type: 3}
+      propertyPath: SelectedIndex
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 6218818687470628998, guid: b7510849115130640891a1b76d286568, type: 3}
       propertyPath: m_Name
       value: Player 2 (Bot)

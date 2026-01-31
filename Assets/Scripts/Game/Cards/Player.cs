@@ -15,7 +15,17 @@ public class Player : MonoBehaviour
 
     }
 
-    public Card GetPlayedCard()
+    public virtual void Update()
+    {
+
+    }
+
+    public virtual bool HasCardSelected()
+    {
+        return true;
+    }
+
+    public virtual Card GetPlayedCard()
     {
         if (Hand.Count == 0)
             return null;
@@ -30,7 +40,7 @@ public class Player : MonoBehaviour
         return card;
     }
 
-    public void InitializeHand()
+    public virtual void InitializeHand()
     {
         //We are already initialized - what are you doing?
         if (Hand.Count > 0)
@@ -43,7 +53,7 @@ public class Player : MonoBehaviour
 
         for (int i = 2; i <= 14; i++)
         {
-            var newCard = GameObject.Instantiate(CardPrefab, HandContainer.transform);
+            var newCard = Instantiate(CardPrefab, HandContainer.transform);
 
             newCard.transform.position += new Vector3(0, 0, .01f * i);
 

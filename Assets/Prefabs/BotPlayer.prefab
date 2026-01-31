@@ -112,3 +112,9 @@ MonoBehaviour:
   HandCenterOffset: {x: 0, y: 0, z: -2.2}
   LerpSpeed: 10
   AnimateContinuously: 1
+  SelectedIndex: -1
+  SelectedLift: 0.4
+  SelectedForward: -0.05
+  SelectedScale: 1.05
+  SelectedRollReduction: 0.35
+  SelectedExtraPitch: -4

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
@@ -6,7 +7,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [DoNotSerialize]
-    public int CurrentPlayerIndex;
+    public int CurrentPlayerIndex = 0;
     public List<Player> players = new();
     private List<Card> trick = new();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -21,22 +22,26 @@ public class GameManager : MonoBehaviour
         {
             player.InitializeHand();
         }
+
+        StartCoroutine(CollectCards());
     }
 
     public virtual void NextTurn()
     {
-        CurrentPlayerIndex = (CurrentPlayerIndex + 1) % players.Count;
         var card = players[CurrentPlayerIndex].GetPlayedCard();
 
         if (card != null)
         {
             trick.Add(card);
+
+            nextTurnTime = Time.time + turnTime;
+            if (trick.Count == players.Count)
+            {
+                ComputeTrickWinner();
+            }
         }
-        else
-        {
-            //Game over, someone can't play a card.
-            DeclareWinner();
-        }
+
+        CurrentPlayerIndex = (CurrentPlayerIndex + 1) % players.Count;
     }
 
     float turnTime = .1f;
@@ -44,16 +49,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Time.time > nextTurnTime)
-        {
-            NextTurn();
-            nextTurnTime = Time.time + turnTime;
 
-            if (trick.Count == players.Count)
-            {
-                ComputeTrickWinner();
-            }
-        }
     }
     private void ComputeTrickWinner()
     {
@@ -89,5 +85,22 @@ public class GameManager : MonoBehaviour
         Debug.Log($"We have a winner: {winner.name} with {winner.Points} points. Good job!");
 
         InitializeGame();
+    }
+
+    private IEnumerator CollectCards()
+    {
+        while (true)
+        {
+            yield return new WaitUntil(() => players[CurrentPlayerIndex].HasCardSelected());
+
+            NextTurn();
+
+            if (players[CurrentPlayerIndex].Hand.Count == 0)
+            {
+                //No more cards in hand
+                DeclareWinner();
+                break;
+            }
+        }
     }
 }
