@@ -50,6 +50,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Discoball",
+                    "type": "Button",
+                    "id": "57ea3d3f-51f3-49c1-afbf-3280a3970788",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -132,17 +141,6 @@
                 },
                 {
                     "name": "",
-                    "id": "02f40cbb-9ff9-4a1c-9365-b709c0db2f10",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Select Card",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "6fbd54ff-3c07-4ddb-9cdb-0246a8988ed9",
                     "path": "<Keyboard>/enter",
                     "interactions": "",
@@ -182,6 +180,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Apply Dexterity",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b06f0ea1-94b3-466f-aefa-e47d15cafca1",
+                    "path": "<Keyboard>/b",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Discoball",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

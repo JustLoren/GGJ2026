@@ -3,9 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
+    private PlayerInput playerInput;
+    public string discoActionName = "Discoball";
+    private InputAction discoAction;
+    public GameObject DiscoballPrefab;
     [DoNotSerialize]
     public int CurrentPlayerIndex = 0;
     public List<Player> players = new();
@@ -13,6 +18,7 @@ public class GameManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        DiscoballPrefab.SetActive(false); // I'm not sure this is needed.
         InitializeGame();
     }
 
@@ -46,7 +52,33 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (discoAction.WasPressedThisFrame())
+            showDiscoball();
 
+        AnimateDiscoball();
+    }
+
+    private void Awake()
+    {
+        if (!playerInput)
+            playerInput = GetComponentInParent<PlayerInput>();
+    }
+
+    private void OnEnable()
+    {
+        if (playerInput)
+        {
+            discoAction = playerInput.actions[discoActionName];
+            if (discoAction == null)
+                Debug.LogError($"Could not find action '{discoActionName}'. Check your Input Actions asset.");
+            else
+                discoAction.Enable();
+        }
+    }
+
+    private void OnDisable()
+    {
+        discoAction?.Disable();
     }
     private void ComputeTrickWinner()
     {
@@ -82,6 +114,18 @@ public class GameManager : MonoBehaviour
                     winningCard.transform.localRotation,
                     winningCard.transform.localScale);
             }
+        }
+    }
+
+    private void showDiscoball()
+    {
+        DiscoballPrefab.SetActive(!DiscoballPrefab.activeSelf);
+    }
+    private void AnimateDiscoball()
+    {
+        if (DiscoballPrefab.activeSelf) 
+        {
+            DiscoballPrefab.transform.Rotate(0f, -20f * Time.deltaTime, 0f);
         }
     }
 
