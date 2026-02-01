@@ -18,6 +18,8 @@ public class TableCameraLook : MonoBehaviour
     [SerializeField] private float maxPitchUp = 20f;
     [SerializeField] private float maxPitchDown = 25f;
 
+    public static float CrazyAngle = 0f;
+
     [Header("Smoothing (optional)")]
     [Tooltip("0 = no smoothing. Higher = snappier smoothing.")]
     [SerializeField] private float smoothing = 0f;
@@ -79,6 +81,12 @@ public class TableCameraLook : MonoBehaviour
     {
         if (lookAction == null) return;
 
+        ApplyCursorState(!GameManager.IsPaused);
+
+        if (GameManager.IsPaused)
+            return;
+
+
         // Mouse delta is typically in pixels per frame; multiply by sensitivity.
         Vector2 look = lookAction.ReadValue<Vector2>();
 
@@ -108,11 +116,18 @@ public class TableCameraLook : MonoBehaviour
         // Apply relative rotation on top of the original orientation
         // For a seated view, local rotation is usually what you want.
         transform.localRotation = Quaternion.Euler(pitch, yaw, 0f);
+
+        //Set how crazy our angle is
+        CrazyAngle = Mathf.Clamp01(pitch / maxPitchDown);
+        Debug.Log($"Crazy Angle: {CrazyAngle}");
     }
 
     private static void ApplyCursorState(bool locked)
     {
-        Cursor.lockState = locked ? CursorLockMode.Locked : CursorLockMode.None;
-        Cursor.visible = !locked;
+        if (locked == Cursor.visible)
+        {
+            Cursor.lockState = locked ? CursorLockMode.Locked : CursorLockMode.None;
+            Cursor.visible = !locked;
+        }
     }
 }

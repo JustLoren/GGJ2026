@@ -33,6 +33,9 @@ public class HumanPlayer : Player
 
     public override void Update()
     {
+        //Don't do anything when paused
+        if (GameManager.IsPaused) return;
+
         if (nextAction.WasPressedThisFrame())
             _handFanner.SelectNext();
 
@@ -162,7 +165,7 @@ public class HumanPlayer : Player
 
     private void DecreaseSanity()
     {
-        CurrentSanity -= SanityDropRate.Evaluate(0f) * Time.deltaTime;
+        CurrentSanity -= SanityDropRate.Evaluate(TableCameraLook.CrazyAngle) * Time.deltaTime;
         Debug.Log($"Current Sanity: {CurrentSanity}");
     }
     #endregion

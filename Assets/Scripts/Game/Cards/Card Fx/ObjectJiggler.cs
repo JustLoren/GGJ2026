@@ -3,10 +3,8 @@ using UnityEngine;
 public class ObjectJiggler : MonoBehaviour
 {
     private Vector3 _baseLocalPosition;
-    [SerializeField] private float minJiggleAmount = 0.04f;
-    [SerializeField] private float maxJiggleAmount = 0.09f;
-    [SerializeField] private float jiggleAmount = 0.05f;
-    [SerializeField] private float jiggleChangeRate = .02f;
+    [SerializeField] private float minJiggleAmount = 0.01f;
+    [SerializeField] private float maxJiggleAmount = 0.11f;
     private float minZjiggle = 0;
     private float maxZjiggle = 0;
 
@@ -19,16 +17,16 @@ public class ObjectJiggler : MonoBehaviour
 
     private void Update()
     {
-        JiggleXY();
+        //jiggleAmount = Random.Range(minJiggleAmount, maxJiggleAmount);
 
-        if (Random.value < jiggleChangeRate)
-            jiggleAmount = Random.Range(minJiggleAmount, maxJiggleAmount);
+        JiggleXY();
     }
 
     private void JiggleXY()
     {
-        float x = Random.Range(-jiggleAmount, jiggleAmount);
-        float y = Random.Range(-jiggleAmount, jiggleAmount);
+        var realJiggleAmt = minJiggleAmount + ((maxJiggleAmount - minJiggleAmount) * TableCameraLook.CrazyAngle);
+        float x = Random.Range(-realJiggleAmt, realJiggleAmt);
+        float y = Random.Range(-realJiggleAmt, realJiggleAmt);
         float z = Random.Range(minZjiggle, maxZjiggle);
 
         transform.localPosition = _baseLocalPosition + new Vector3(x, y, z);

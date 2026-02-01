@@ -7,10 +7,18 @@ using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
+    public static bool IsPaused = false;
     private PlayerInput playerInput;
     public string discoActionName = "Discoball";
     private InputAction discoAction;
     public GameObject DiscoballPrefab;
+
+    public string pauseActionName = "Pause";
+    private InputAction pauseAction;
+    public GameObject PauseMenu;
+    public GameObject GameOverMenu;
+    public GameObject WinUI, LoseUI;
+
     [DoNotSerialize]
     public int CurrentPlayerIndex = 0;
     public List<Player> players = new();
@@ -48,6 +56,7 @@ public class GameManager : MonoBehaviour
     }
 
     public float turnTime = .25f;
+    public float waitAfterTrick = 1.25f;
     public float waitAfterRound = 2.5f;
     // Update is called once per frame
     void Update()
@@ -56,6 +65,16 @@ public class GameManager : MonoBehaviour
             ShowDiscoball();
 
         AnimateDiscoball();
+
+        if (pauseAction.WasPressedThisFrame())
+            TogglePause();
+    }
+
+    public void TogglePause()
+    {
+        IsPaused = !IsPaused;
+        PauseMenu.SetActive(IsPaused);
+        Time.timeScale = IsPaused ? 0f : 1f;
     }
 
     private void Awake()
@@ -73,13 +92,29 @@ public class GameManager : MonoBehaviour
                 Debug.LogError($"Could not find action '{discoActionName}'. Check your Input Actions asset.");
             else
                 discoAction.Enable();
+
+            pauseAction = playerInput.actions[pauseActionName];
+            if (pauseAction == null)
+                Debug.LogError($"Could not find action '{pauseActionName}'. Check your Input Actions asset.");
+            else
+                pauseAction.Enable();
         }
     }
 
     private void OnDisable()
     {
         discoAction?.Disable();
+        pauseAction?.Disable();
     }
+
+    private void OnDestroy()
+    {
+        //always unpause time
+        Time.timeScale = 1f;
+        //Always unpause game
+        IsPaused = false;
+    }
+
     private void ComputeTrickWinner()
     {
         var highestNumber = trick[0].GetNumber();
@@ -123,24 +158,59 @@ public class GameManager : MonoBehaviour
 
         Debug.Log($"We have a winner: {winner.name} with {winner.Points} points. Good job!");
 
-        InitializeGame();
+        //InitializeGame();
+        ShowGameOver(winner is HumanPlayer);
+    }
+
+    private void ShowGameOver(bool win)
+    {
+        GameOverMenu.SetActive(true);
+        if (win)
+        {
+            WinUI.SetActive(true);
+        }
+        else
+        {
+            LoseUI.SetActive(true);
+        }
+        IsPaused = true;
+        Time.timeScale = 0f;
     }
 
     private IEnumerator CollectCards()
     {
         while (true)
         {
-            yield return new WaitUntil(() => players[CurrentPlayerIndex].HasCardSelected());
+            yield return new WaitUntil(() => players[CurrentPlayerIndex].HasCardSelected()
+                                             || HumanPlayer.CurrentSanityScore == 0);
+
+            if (HumanPlayer.CurrentSanityScore == 0)
+            {
+                ShowGameOver(false);
+                yield break;
+            }
+
+            if (IsPaused)
+                yield return new WaitUntil(() => !IsPaused);
 
             NextTurn();
 
-            yield return new WaitForSecondsRealtime(turnTime);
+            yield return new WaitForSeconds(turnTime);
+
+
+            if (IsPaused)
+                yield return new WaitUntil(() => !IsPaused);
 
             if (trick.Count == players.Count)
             {
+                yield return new WaitForSeconds(waitAfterTrick);
+
                 ComputeTrickWinner();
 
-                yield return new WaitForSecondsRealtime(waitAfterRound);
+                yield return new WaitForSeconds(waitAfterRound);
+
+                if (IsPaused)
+                    yield return new WaitUntil(() => !IsPaused);
 
                 foreach (var card in trick)
                 {
@@ -152,6 +222,10 @@ public class GameManager : MonoBehaviour
 
             if (players[CurrentPlayerIndex].Hand.Count == 0)
             {
+
+                if (IsPaused)
+                    yield return new WaitUntil(() => !IsPaused);
+
                 //No more cards in hand
                 DeclareWinner();
                 break;
@@ -191,7 +265,7 @@ public class GameManager : MonoBehaviour
     }
     private void AnimateDiscoball()
     {
-        if (DiscoballPrefab.activeSelf) 
+        if (DiscoballPrefab.activeSelf)
         {
             if (discoballNeedsToMove)
                 MoveDiscoball();
@@ -205,13 +279,13 @@ public class GameManager : MonoBehaviour
         Vector3 pos = DiscoballPrefab.transform.localPosition;
         pos.y = Mathf.MoveTowards(pos.y, distinationYPosition, movementSpeed * Time.deltaTime);
         DiscoballPrefab.transform.localPosition = pos;
-        
+
         if (Mathf.Approximately(pos.y, distinationYPosition))
         {
             if (distinationYPosition == hiddenYPosition)
                 DiscoballPrefab.SetActive(false);
             discoballNeedsToMove = false;
-        }    
+        }
     }
     #endregion
 }
