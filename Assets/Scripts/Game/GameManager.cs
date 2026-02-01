@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        DiscoballPrefab.SetActive(false); // I'm not sure this is needed.
+        ResetDiscoball();
         InitializeGame();
     }
 
@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         if (discoAction.WasPressedThisFrame())
-            showDiscoball();
+            ShowDiscoball();
 
         AnimateDiscoball();
     }
@@ -117,18 +117,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void showDiscoball()
-    {
-        DiscoballPrefab.SetActive(!DiscoballPrefab.activeSelf);
-    }
-    private void AnimateDiscoball()
-    {
-        if (DiscoballPrefab.activeSelf) 
-        {
-            DiscoballPrefab.transform.Rotate(0f, -20f * Time.deltaTime, 0f);
-        }
-    }
-
     private void DeclareWinner()
     {
         var winner = players.First(p => p.Points == players.Max(pm => pm.Points));
@@ -170,4 +158,60 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
+    #region Discoball
+    float hiddenYPosition = 6.2f;
+    float overTableYPosition = 3.2f;
+    float movementSpeed = 3f;
+    float distinationYPosition;
+    bool discoballNeedsToMove = false;
+
+    private void ResetDiscoball()
+    {
+        Vector3 pos = DiscoballPrefab.transform.localPosition;
+        pos.y = hiddenYPosition;
+        DiscoballPrefab.transform.localPosition = pos;
+
+        discoballNeedsToMove = false;
+    }
+    private void ShowDiscoball()
+    {
+        if (DiscoballPrefab.activeSelf)
+        {
+            // discoball is active, move it up, then hide it
+            distinationYPosition = hiddenYPosition;
+        }
+        else
+        {
+            // discoball is inactive, spin it, and drop it down
+            DiscoballPrefab.SetActive(true);
+            distinationYPosition = overTableYPosition;
+        }
+        discoballNeedsToMove = true;
+    }
+    private void AnimateDiscoball()
+    {
+        if (DiscoballPrefab.activeSelf) 
+        {
+            if (discoballNeedsToMove)
+                MoveDiscoball();
+
+            // spin
+            DiscoballPrefab.transform.Rotate(0f, -20f * Time.deltaTime, 0f);
+        }
+    }
+    private void MoveDiscoball()
+    {
+        Vector3 pos = DiscoballPrefab.transform.localPosition;
+        pos.y = Mathf.MoveTowards(pos.y, distinationYPosition, movementSpeed * Time.deltaTime);
+        DiscoballPrefab.transform.localPosition = pos;
+        
+        if (Mathf.Approximately(pos.y, distinationYPosition))
+        {
+            if (distinationYPosition == hiddenYPosition)
+                DiscoballPrefab.SetActive(false);
+            discoballNeedsToMove = false;
+        }    
+    }
+    #endregion
 }
