@@ -109,12 +109,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HumanPlayer
   HandContainer: {fileID: 5738898398500051441}
   PlayLocation: {fileID: 9113524733159223116}
+  ScoreLocation: {fileID: 7516506422487789196}
   Hand: []
   CardPrefab: {fileID: 1882170917338711666, guid: 422a47f4b3e899d489a0e1b3eef5e1eb, type: 3}
-  Points: 0
+  ChipPrefab: {fileID: 786976889375649550, guid: c3c2fcb085e8749df8626f81abe95ec9, type: 3}
   nextActionName: Next Card
   previousActionName: Previous Card
   selectActionName: Select Card
+  dexterityActionName: Apply Dexterity
 --- !u!114 &2683634305778121931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,6 +178,11 @@ MonoBehaviour:
 --- !u!1 &5738898398500051441 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8304188314634705445, guid: 523d189de3b23da42807b0230abc1dbe, type: 3}
+  m_PrefabInstance: {fileID: 4367030291721028564}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7516506422487789196 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6112845042499759448, guid: 523d189de3b23da42807b0230abc1dbe, type: 3}
   m_PrefabInstance: {fileID: 4367030291721028564}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &9113524733159223116 stripped

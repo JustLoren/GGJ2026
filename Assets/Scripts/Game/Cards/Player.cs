@@ -6,10 +6,23 @@ public class Player : MonoBehaviour
 {
     public GameObject HandContainer;
     public GameObject PlayLocation;
+    public GameObject ScoreLocation;
     public List<Card> Hand = new();
     public Card CardPrefab;
-    [DoNotSerialize]
-    public int Points;
+    public GameObject ChipPrefab;
+    private int _points;
+    public int Points
+    {
+        get
+        {
+            return _points;
+        }
+        set
+        {
+            _points = value;
+            UpdateScoreChips();
+        }
+    }
 
     private void Start()
     {
@@ -51,6 +64,11 @@ public class Player : MonoBehaviour
         }
 
         Points = 0;
+        foreach(var chip in ScoreChips)
+        {
+           Destroy(chip); 
+        }
+        ScoreChips.Clear();
 
         for (int i = 2; i <= 14; i++)
         {
@@ -59,7 +77,22 @@ public class Player : MonoBehaviour
             //newCard.transform.position += new Vector3(0, 0, .01f * i);
 
             newCard.SetNumber(i);
-            Hand.Insert(Random.Range(0, Hand.Count + 1), newCard);
+            Hand.Insert(Random.Range(0, Hand.Count + 1), newCard); // 0.659, -0.013, -0.137
         }
     }
+
+    #region ScoreLocation
+    private List<GameObject> ScoreChips = new();
+    private void UpdateScoreChips()
+    {
+        for (int i = ScoreChips.Count; i < Points; i++)
+        {
+            var newChip = Instantiate(ChipPrefab, this.ScoreLocation.transform);
+            ScoreChips.Add(newChip);
+            var pos = newChip.transform.localPosition;
+            pos.y = 0.03f * i;
+            newChip.transform.localPosition = pos;
+        }
+    }
+    #endregion
 }

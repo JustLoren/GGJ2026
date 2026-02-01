@@ -68,6 +68,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8304188314634705445, guid: 523d189de3b23da42807b0230abc1dbe, type: 3}
   m_PrefabInstance: {fileID: 9093658013756177266}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &3091186666915141162 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6112845042499759448, guid: 523d189de3b23da42807b0230abc1dbe, type: 3}
+  m_PrefabInstance: {fileID: 9093658013756177266}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4382100657898002410 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4819819842587995288, guid: 523d189de3b23da42807b0230abc1dbe, type: 3}
@@ -92,9 +97,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BotPlayer
   HandContainer: {fileID: 940494272523821399}
   PlayLocation: {fileID: 4382100657898002410}
+  ScoreLocation: {fileID: 3091186666915141162}
   Hand: []
   CardPrefab: {fileID: 1882170917338711666, guid: 422a47f4b3e899d489a0e1b3eef5e1eb, type: 3}
-  Points: 0
+  ChipPrefab: {fileID: 786976889375649550, guid: c3c2fcb085e8749df8626f81abe95ec9, type: 3}
 --- !u!114 &5268820417515533939
 MonoBehaviour:
   m_ObjectHideFlags: 0
