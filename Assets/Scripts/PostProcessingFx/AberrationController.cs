@@ -89,15 +89,15 @@ public class AberrationController : MonoBehaviour
         _aberration.active = true;
     }
 
-    [SerializeField] private float flickerSpeed = 25f;
-    [SerializeField] private float flickerMin = 0.15f;
-    [SerializeField] private float flickerMax = 0.45f;
+    [SerializeField] private AnimationCurve flickerSpeed;
+    [SerializeField] private AnimationCurve flickerMin;
+    [SerializeField] private AnimationCurve flickerMax;
 
     private void Update()
     {
         // Simple noise flicker
-        float t = Time.time * flickerSpeed;
+        float t = Time.time * flickerSpeed.Evaluate(HumanPlayer.CurrentSanityScore);
         float n = Mathf.PerlinNoise(t, 0.123f);
-        SetIntensity(Mathf.Lerp(flickerMin, flickerMax, n));
+        SetIntensity(Mathf.Lerp(flickerMin.Evaluate(HumanPlayer.CurrentSanityScore), flickerMax.Evaluate(HumanPlayer.CurrentSanityScore), n));
     }
 }

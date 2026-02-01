@@ -422,6 +422,58 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1445991968}
     m_Modifications:
+    - target: {fileID: -8511675819864787605, guid: 71c181b3060e4574383b41f6c1e050be, type: 3}
+      propertyPath: MaxSanity
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: -8511675819864787605, guid: 71c181b3060e4574383b41f6c1e050be, type: 3}
+      propertyPath: SanityDropRate.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8511675819864787605, guid: 71c181b3060e4574383b41f6c1e050be, type: 3}
+      propertyPath: SanityDropRate.m_Curve.Array.data[1].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8511675819864787605, guid: 71c181b3060e4574383b41f6c1e050be, type: 3}
+      propertyPath: SanityDropRate.m_Curve.Array.data[0].value
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -8511675819864787605, guid: 71c181b3060e4574383b41f6c1e050be, type: 3}
+      propertyPath: SanityDropRate.m_Curve.Array.data[1].value
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -8511675819864787605, guid: 71c181b3060e4574383b41f6c1e050be, type: 3}
+      propertyPath: SanityDropRate.m_Curve.Array.data[0].inSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8511675819864787605, guid: 71c181b3060e4574383b41f6c1e050be, type: 3}
+      propertyPath: SanityDropRate.m_Curve.Array.data[1].inSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8511675819864787605, guid: 71c181b3060e4574383b41f6c1e050be, type: 3}
+      propertyPath: SanityDropRate.m_Curve.Array.data[0].outSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8511675819864787605, guid: 71c181b3060e4574383b41f6c1e050be, type: 3}
+      propertyPath: SanityDropRate.m_Curve.Array.data[1].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: -8511675819864787605, guid: 71c181b3060e4574383b41f6c1e050be, type: 3}
+      propertyPath: SanityDropRate.m_Curve.Array.data[1].outSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8511675819864787605, guid: 71c181b3060e4574383b41f6c1e050be, type: 3}
+      propertyPath: SanityDropRate.m_Curve.Array.data[0].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: -8511675819864787605, guid: 71c181b3060e4574383b41f6c1e050be, type: 3}
+      propertyPath: SanityDropRate.m_Curve.Array.data[0].tangentMode
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: -8511675819864787605, guid: 71c181b3060e4574383b41f6c1e050be, type: 3}
+      propertyPath: SanityDropRate.m_Curve.Array.data[1].tangentMode
+      value: 34
+      objectReference: {fileID: 0}
     - target: {fileID: 1505409010668029984, guid: 71c181b3060e4574383b41f6c1e050be, type: 3}
       propertyPath: m_Name
       value: Player 1 (Human)
@@ -744,6 +796,7 @@ GameObject:
   - component: {fileID: 832575518}
   - component: {fileID: 832575520}
   - component: {fileID: 832575521}
+  - component: {fileID: 832575522}
   m_Layer: 0
   m_Name: Global Volume
   m_TagString: Untagged
@@ -797,16 +850,75 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::VignetteController
   volume: {fileID: 0}
   volumeObjectName: 
-  flickerSpeed: 8
+  flickerSpeed:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 12
+      inSlope: -8
+      outSlope: -8
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 4
+      inSlope: -8
+      outSlope: -8
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   flickerMin:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.4
+      inSlope: -0.4
+      outSlope: -0.4
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.4
+      outSlope: -0.4
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   flickerMax:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.75
+      inSlope: -0.75
+      outSlope: -0.75
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.75
+      outSlope: -0.75
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -824,9 +936,164 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AberrationController
   volume: {fileID: 0}
   volumeObjectName: 
-  flickerSpeed: 12
-  flickerMin: 0.15
-  flickerMax: 0.85
+  flickerSpeed:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 12
+      inSlope: -6
+      outSlope: -6
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 6
+      inSlope: -6
+      outSlope: -6
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  flickerMin:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.65
+      inSlope: -0.65
+      outSlope: -0.65
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.65
+      outSlope: -0.65
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  flickerMax:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.95
+      inSlope: -0.95
+      outSlope: -0.95
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.95
+      outSlope: -0.95
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &832575522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 832575517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e60b1c4563d8dad46b979bac9df35dec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FilmGrainController
+  volume: {fileID: 0}
+  volumeObjectName: 
+  flickerSpeed:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 12
+      inSlope: -12
+      outSlope: -12
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -12
+      outSlope: -12
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  flickerMin:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.8
+      inSlope: -0.8
+      outSlope: -0.8
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.8
+      outSlope: -0.8
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  flickerMax:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -1
+      outSlope: -1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -1
+      outSlope: -1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!4 &912872723 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 02a7a8c3372451b4598b74911e5fefda, type: 3}

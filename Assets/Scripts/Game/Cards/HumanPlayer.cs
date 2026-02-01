@@ -27,6 +27,8 @@ public class HumanPlayer : Player
 
         if (!playerInput)
             playerInput = GetComponentInParent<PlayerInput>();
+
+        CurrentSanity = MaxSanity;
     }
 
     public override void Update()
@@ -54,6 +56,8 @@ public class HumanPlayer : Player
                 fade.ApplyFade();
             }
         }
+
+        DecreaseSanity();
     }
 
     private void OnEnable()
@@ -137,4 +141,29 @@ public class HumanPlayer : Player
     {
         return hasChosenCard;
     }
+
+    #region Sanity Section
+    public AnimationCurve SanityDropRate;
+    private float _currentSanity;
+    public float CurrentSanity
+    {
+        get
+        {
+            return _currentSanity;
+        }
+        set
+        {
+            _currentSanity = Mathf.Clamp(value, 0f, MaxSanity);
+            CurrentSanityScore = _currentSanity / MaxSanity;
+        }
+    }
+    public float MaxSanity = 1000f;
+    public static float CurrentSanityScore = 1f;
+
+    private void DecreaseSanity()
+    {
+        CurrentSanity -= SanityDropRate.Evaluate(0f) * Time.deltaTime;
+        Debug.Log($"Current Sanity: {CurrentSanity}");
+    }
+    #endregion
 }
